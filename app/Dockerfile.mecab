@@ -1,0 +1,103 @@
+#############################################
+# Stage 1: Debian Bookworm で MeCab 等のビルド
+#############################################
+FROM debian:bookworm AS mecab-build
+
+# 非対話モードの設定
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 必要なパッケージのインストール
+RUN apt-get update && \
+    apt-get install -y \
+      build-essential \
+      automake \
+      libtool \
+      pkg-config \
+      patch \
+      wget \
+      curl \
+      file && \
+    rm -rf /var/lib/apt/lists/*
+
+# 作業ディレクトリを設定
+WORKDIR /usr/local/src
+
+# --- MeCab本体のインストール ---
+# 自動解凍される ADD 命令でアーカイブを展開
+ADD vendor/mecab-0.996.tar.gz /usr/local/src/
+RUN cd mecab-0.996 && \
+    ./configure --enable-utf8-only && \
+    make && \
+    make install && \
+    ldconfig
+
+# --- mecab-ipadic のインストール ---
+ADD vendor/mecab-ipadic-2.7.0-20070801.tar.gz /usr/local/src/
+# パッチは COPY 命令で /usr/local/src にコピー
+COPY vendor/mecab-ipadic-2.7.0-20070801.patch /usr/local/src/
+RUN cd mecab-ipadic-2.7.0-20070801 && \
+    patch -p1 < ../mecab-ipadic-2.7.0-20070801.patch && \
+    ./configure --with-charset=UTF-8 && \
+    make && \
+    make install
+RUN ldconfig
+
+# --- hts_engine_API のインストール ---
+ADD vendor/hts_engine_API-1.08.tar.gz /usr/local/src/
+RUN cd hts_engine_API-1.08 && \
+    ./configure && \
+    make && \
+    make install
+
+# --- open_jtalk のインストール ---
+ADD vendor/open_jtalk-1.07.tar.gz /usr/local/src/
+RUN cd open_jtalk-1.07 && \
+    sed -i "s/#define MAXBUFLEN 1024/#define MAXBUFLEN 10240/" bin/open_jtalk.c && \
+    sed -i "s/0x00D0 SPACE/0x000D SPACE/" mecab-naist-jdic/char.def && \
+    ./configure --with-charset=UTF-8 && \
+    make && \
+    make install
+
+# --- lame のインストール ---
+ADD vendor/lame-3.99.5.tar.gz /usr/local/src/
+RUN cd lame-3.99.5 && \
+    ./configure && \
+    make && \
+    make install
+
+# --- sox のインストール ---
+ADD vendor/sox-14.4.1.tar.gz /usr/local/src/
+RUN cd sox-14.4.1 && \
+    ./configure && \
+    make && \
+    make install
+
+# 最終的に共有ライブラリキャッシュを更新
+RUN ldconfig
+
+#############################################
+# Stage 2: Ruby 3.2 で mecab-ruby 拡張のビルド
+#############################################
+FROM ruby:3.2 AS mecab-ruby-build
+
+# 必要なパッケージ（pkg-config 等）があればインストール
+RUN apt-get update && \
+    apt-get install -y pkg-config && \
+    rm -rf /var/lib/apt/lists/*
+
+# Stage 1 でビルドした /usr/local 以下をコピー（MeCab本体等のライブラリが含まれる）
+COPY --from=mecab-build /usr/local /usr/local
+
+# 作業ディレクトリの設定
+WORKDIR /usr/local/src
+
+# mecab-ruby のアーカイブを ADD 命令で展開
+ADD vendor/mecab-ruby-0.996.tar.gz /usr/local/src/
+RUN cd mecab-ruby-0.996 && \
+    ruby extconf.rb && \
+    make && \
+    make install && \
+    ldconfig
+
+# 最終的なコンテナ起動時のコマンド（必要に応じて変更）
+CMD ["bash"]
