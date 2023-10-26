@@ -1,3 +1,4 @@
 .DS_Store
 /app/shirasagi
 /db/backup/*
+!/db/backup/.gitkeep
