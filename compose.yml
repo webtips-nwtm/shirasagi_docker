@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mongo:4.4
+    platform: linux/x86_64
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db/backup:/backup
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: >
+      /bin/sh -c "rm -rf /shirasagi/tmp/pids &&
+      rm -rf /shirasagi/tmp/sockets &&
+      bundle install --path vendor/bundle &&
+      bin/deploy &&
+      /bin/bash"
+    #command: bash -c "rm -rf /shirasagi/tmp/pids && rm -rf /shirasagi/tmp/sockets"
+    tty: true
+    volumes:
+      - ./app/shirasagi:/shirasagi
+      - ./app/data:/data
+    depends_on:
+      - db
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - ./app/shirasagi/tmp/sockets:/shirasagi/tmp/sockets
+      - ./app/shirasagi/public:/shirasagi/public
+      - ./app/shirasagi/private:/shirasagi/private
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+
+  #  volumes:
+  #    bundle:
+  #      name: rails-app_bundle
