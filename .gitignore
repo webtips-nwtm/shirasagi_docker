@@ -62,6 +62,7 @@ build-iPhoneSimulator/
 
 # General
 .DS_Store
+<<<<<<< HEAD
 .AppleDouble
 .LSOverride
 
@@ -219,3 +220,5 @@ yarn-debug.log*
 /public/uploads
 /db/data/
 /nginx/log/
+/db/backup/*
+!/db/backup/.gitkeep
