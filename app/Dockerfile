@@ -141,7 +141,6 @@ COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
 # Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
->>>>>>> 5048064 (firstcommit)
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
