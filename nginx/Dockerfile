@@ -1,4 +1,4 @@
-FROM --platform=linxu/amd64 amd64/nginx
+FROM --platform=linux/x86_64 nginx:latest
 
 RUN rm -f /etc/nginx/conf.d/*
 
