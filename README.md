@@ -59,5 +59,5 @@
 - 提出用のCSVファイルをサーバにアップロード
   - ダウンロードフォルダが~/downloadの場合
   ```
-  # scp ~/download/gws_histories_202309.csv root@35.73.67.250:/var/www/files/download/
+  # scp ~/download/gws_histories_$(date +%Y%m).csv root@35.73.67.250:/var/www/files/download/
   ```
