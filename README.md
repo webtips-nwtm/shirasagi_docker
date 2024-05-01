@@ -32,7 +32,7 @@
    http://localhost/.g1/gws/histories/-/download<br>
    ![ダウンロード画面](https://github.com/webtips-nwtm/dev-riken/blob/images/download.png)
 
-3. ダウンロードしたファイルを提出用(gws*histories*$(date +%Y%m).csv)と集計用.xlxsにリネーム
+3. ダウンロードしたファイルを提出用.csvと集計用.xlxsにリネーム
 
 4. 集計用.xlsxを使用する。<br>1行目を選択しフィルター機能を有効化
    ![集計画面1](https://github.com/webtips-nwtm/dev-riken/blob/images/1.png)
