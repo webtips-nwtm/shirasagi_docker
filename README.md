@@ -66,8 +66,6 @@ git submodule update --recursive
 
 ### 3. Docker イメージのビルド
 
-<<<<<<< HEAD
-
 ```bash
 docker compose build
 ```
