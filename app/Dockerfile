@@ -101,6 +101,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
 FROM ruby:3.2 AS runtime
+<<<<<<< HEAD
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
@@ -119,15 +120,17 @@ WORKDIR /var/www/shirasagi
 #     fi
 #
 FROM ruby:3.2-slim AS runtime
+=======
+>>>>>>> 9509f41 (fix: bundle install エラーのためimageをruby:3.2に変更)
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
       lame \
-      sox && \
-    update-ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+      sox \
+      git \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/shirasagi
 

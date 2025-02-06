@@ -7,12 +7,8 @@ services:
       - ./db/backup:/backup
       - ./db/data:/data/db # MongoDBのデータ永続化
     networks:
-<<<<<<< HEAD
       shirasagi_net:
         ipv4_address: 172.20.0.2
-=======
-      - shirasagi_net
->>>>>>> 45c5c88 (feat: first commit)
 
   app:
     platform: linux/amd64
@@ -26,7 +22,6 @@ services:
     restart: always
     volumes:
       - ./app/shirasagi:/var/www/shirasagi
-<<<<<<< HEAD
     depends_on:
       - db
     networks:
@@ -36,18 +31,6 @@ services:
       - LANG=C.UTF-8
       - LC_ALL=C.UTF-8
       - LD_LIBRARY_PATH=/usr/local/lib
-=======
-      - ./app/shirasagi/public:/var/www/shirasagi/public
-      - ./app/shirasagi/private:/var/www/shirasagi/private
-    depends_on:
-      - db
-    networks:
-      - shirasagi_net
-    environment:
-      #- VOICE_API_ENDPOINT=http://localhost
-      - LANG=C.UTF-8
-      - LC_ALL=C.UTF-8
->>>>>>> 45c5c88 (feat: first commit)
 
   nginx:
     build:
@@ -63,19 +46,12 @@ services:
     depends_on:
       - app
     networks:
-<<<<<<< HEAD
       shirasagi_net:
         ipv4_address: 172.20.0.4
-=======
-      - shirasagi_net
->>>>>>> 45c5c88 (feat: first commit)
 
 networks:
   shirasagi_net:
     driver: bridge
-<<<<<<< HEAD
     ipam:
       config:
         - subnet: 172.20.0.0/16
-=======
->>>>>>> 45c5c88 (feat: first commit)
