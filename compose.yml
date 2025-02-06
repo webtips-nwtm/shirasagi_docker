@@ -28,6 +28,7 @@ services:
       shirasagi_net:
         ipv4_address: 172.20.0.3
     environment:
+      - VOICE_API_ENDPOINT=http://nginx
       - LANG=C.UTF-8
       - LC_ALL=C.UTF-8
       - LD_LIBRARY_PATH=/usr/local/lib
