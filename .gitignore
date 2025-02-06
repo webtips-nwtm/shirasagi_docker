@@ -222,5 +222,3 @@ yarn-debug.log*
 <<<<<<< HEAD
 /db/backup/*
 !/db/backup/.gitkeep
-=======
->>>>>>> 45c5c88 (feat: first commit)
