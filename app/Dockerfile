@@ -100,16 +100,16 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-FROM ruby:3.2-slim AS runtime
+FROM ruby:3.2 AS runtime
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
       lame \
-      sox && \
-    update-ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+      sox \
+      git \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/shirasagi
 
