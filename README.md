@@ -68,6 +68,18 @@ git submodule update --recursive
 docker compose build
 ```
 
+### 4. コンテナの起動
+
+```bash
+docker compose up -d
+```
+
+### 5. Makefile を使ったセットアップ
+
+```bash
+make all
+```
+
 ---
 
 ## Makefile の主なターゲット
