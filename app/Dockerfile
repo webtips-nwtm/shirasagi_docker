@@ -113,21 +113,6 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-<<<<<<< HEAD
-FROM ruby:3.0 AS runtime
-# 必要なパッケージと Yarn のインストール（apt 経由）
-=======
-FROM ruby:3.2 AS runtime
-<<<<<<< HEAD
-
->>>>>>> a4e4eb8 (fix: bundle install エラーのためimageをruby:3.2に変更)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      libmecab-dev \
-      lame \
-      sox \
-      git \
-<<<<<<< HEAD
       curl \
       gnupg && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -135,7 +120,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get update && apt-get install -y yarn && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-=======
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
@@ -146,9 +130,6 @@ WORKDIR /var/www/shirasagi
 #       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
 #     fi
 #
-FROM ruby:3.2-slim AS runtime
-=======
->>>>>>> 9509f41 (fix: bundle install エラーのためimageをruby:3.2に変更)
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
@@ -159,7 +140,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
->>>>>>> a4e4eb8 (fix: bundle install エラーのためimageをruby:3.2に変更)
 WORKDIR /var/www/shirasagi
 
 # Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
