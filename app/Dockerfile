@@ -115,6 +115,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 FROM ruby:2.7 AS runtime
 # 必要なパッケージと Yarn のインストール（apt 経由）
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
