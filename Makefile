@@ -10,7 +10,7 @@ db-setup:
 
 # サイトの作成
 create-site:
-	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "localhost" }'
+	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "172.20.0.4" }'
 
 # 初期データの投入
 db-seed:
