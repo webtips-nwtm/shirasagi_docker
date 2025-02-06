@@ -10,11 +10,15 @@ db-setup:
 
 # サイトの作成
 create-site:
+<<<<<<< HEAD
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "tst-shirasagi4.ssenv.web-tips.co.jp" }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "企業サンプル", host: "company", domains: "tst-shirasagi4.ssenv.web-tips.co.jp", subdir:"company", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "子育て支援サンプル", host: "childcare", domains: "tst-shirasagi4.ssenv.web-tips.co.jp", subdir:"childcare", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "オープンデータサンプル", host: "opendata", domains: "tst-shirasagi4.ssenv.web-tips.co.jp", subdir:"opendata", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "ＬＰサンプル", host: "lp_", domains: "tst-shirasagi4.ssenv.web-tips.co.jp", subdir:"lp_/", parent_id:1 }'
+=======
+	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "172.20.0.4" }'
+>>>>>>> 692e71f (fix: 読み上げ機能エラーの為固定IP化)
 
 # 初期データの投入
 db-seed:
