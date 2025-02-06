@@ -72,6 +72,26 @@ git submodule update --recursive
 docker compose build
 ```
 
+### 1. リポジトリのクローン
+
+```bash
+git clone https://github.com/webtips-nwtm/shirasagi_docker.git
+cd shirasagi_docker
+```
+
+### 2. サブモジュールの初期化・更新
+
+```bash
+git submodule init
+git submodule update --recursive
+```
+
+### 3. Docker イメージのビルド
+
+```bash
+docker compose build
+```
+
 ### 4. コンテナの起動
 
 ```bash
