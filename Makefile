@@ -1,12 +1,48 @@
-unicorn_start:
-	docker compose exec app rm -rf /shirasagi/tmp/pids
-	docker compose exec app rm -rf /shirasagi/tmp/sockets
-	docker compose exec app bundle exec rake unicorn:start
+.PHONY: db-reset db-setup create-site db-seed db-all unicorn-start unicorn-stop shirasagi-setup shirasagi-start
+
+# MongoDB のリセット
+db-reset:
+	docker compose exec app bundle exec rake db:drop
+
+# MongoDB のセットアップ
+db-setup:
+	docker compose exec app bundle exec rake db:create_indexes
+
+# サイトの作成
+create-site:
+	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "localhost" }'
+
+# 初期データの投入
+db-seed:
+	docker compose exec app bundle exec rake db:seed site=www name=demo
+
+# すべての DB セットアップ
+db-all: db-reset db-setup create-site db-seed
+
+# Shirasagi のセットアップ
+shirasagi-setup:
+	docker compose exec app bundle install
+	docker compose exec app bundle exec rake assets:precompile RAILS_ENV=production
+	docker compose exec app bundle exec rake ss:deploy RAILS_ENV=production
+	
+# Unicorn を手動で起動
+unicorn-start:
+	docker compose exec app rm -rf /var/www/shirasagi/tmp/pids/
+	docker compose exec app rm -rf /var/www/shirasagi/tmp/sockets/
+	docker compose exec app mkdir -p /var/www/shirasagi/tmp/pids
+	docker compose exec app mkdir -p /var/www/shirasagi/tmp/sockets
+	docker compose exec app bundle exec unicorn -c config/unicorn.rb -E production -D
 	docker compose restart nginx
-unicorn_stop:
+
+# Unicorn を停止
+unicorn-stop:
 	docker compose exec app bundle exec rake unicorn:stop
 	docker compose exec app rm -rf /shirasagi/tmp/pids
 	docker compose exec app rm -rf /shirasagi/tmp/sockets
-db_init:
-	./dbinit.sh
-	docker compose exec db mongorestore /backup/mongodump
+
+# Shirasagi を手動で起動
+shirasagi-start: shirasagi-setup unicorn-start
+
+# すべてをセットアップ
+all: shirasagi-start db-all
+

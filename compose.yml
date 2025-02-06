@@ -1,28 +1,36 @@
 services:
   db:
-    image: mongo:4.4
-    platform: linux/x86_64
+    image: mongo:7
     ports:
       - 27017:27017
     volumes:
       - ./db/backup:/backup
+      - ./db/data:/data/db # MongoDBのデータ永続化
+    networks:
+      - shirasagi_net
+
   app:
     build:
       context: ./app
       dockerfile: Dockerfile
-    command: >
-      /bin/sh -c "rm -rf /shirasagi/tmp/pids &&
-      rm -rf /shirasagi/tmp/sockets &&
-      bundle install --path vendor/bundle &&
-      bin/deploy &&
-      /bin/bash"
-    #command: bash -c "rm -rf /shirasagi/tmp/pids && rm -rf /shirasagi/tmp/sockets"
+    ports:
+      - 3000:3000
     tty: true
+    stdin_open: true
+    restart: always
     volumes:
-      - ./app/shirasagi:/shirasagi
-      - ./app/data:/data
+      - ./app/shirasagi:/var/www/shirasagi
+      - ./app/shirasagi/public:/var/www/shirasagi/public
+      - ./app/shirasagi/private:/var/www/shirasagi/private
     depends_on:
       - db
+    networks:
+      - shirasagi_net
+    environment:
+      #- VOICE_API_ENDPOINT=http://localhost
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+
   nginx:
     build:
       context: ./nginx
@@ -31,13 +39,14 @@ services:
       - 80:80
     restart: always
     volumes:
-      - ./app/shirasagi/tmp/sockets:/shirasagi/tmp/sockets
-      - ./app/shirasagi/public:/shirasagi/public
-      - ./app/shirasagi/private:/shirasagi/private
+      - ./app/shirasagi/:/var/www/shirasagi
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/log:/var/log/nginx
     depends_on:
       - app
+    networks:
+      - shirasagi_net
 
-  #  volumes:
-  #    bundle:
-  #      name: rails-app_bundle
+networks:
+  shirasagi_net:
+    driver: bridge
