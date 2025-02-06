@@ -28,7 +28,7 @@ services:
     networks:
       - shirasagi_net
     environment:
-      #- VOICE_API_ENDPOINT=http://localhost
+      - VOICE_API_ENDPOINT=http://nginx
       - LANG=C.UTF-8
       - LC_ALL=C.UTF-8
 
