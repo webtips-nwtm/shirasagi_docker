@@ -135,6 +135,7 @@ FROM ruby:3.0 AS runtime
 FROM ruby:2.7 AS runtime
 >>>>>>> 5048064 (firstcommit)
 # 必要なパッケージと Yarn のインストール（apt 経由）
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
