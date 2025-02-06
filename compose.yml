@@ -29,9 +29,12 @@ services:
         ipv4_address: 172.20.0.3
     environment:
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       - VOICE_API_ENDPOINT=http://nginx
 >>>>>>> ed23f83 (feat: 環境変数の設定)
+=======
+>>>>>>> 692e71f (fix: 読み上げ機能エラーの為固定IP化)
       - LANG=C.UTF-8
       - LC_ALL=C.UTF-8
       - LD_LIBRARY_PATH=/usr/local/lib
