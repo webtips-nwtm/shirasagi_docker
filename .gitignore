@@ -219,5 +219,8 @@ yarn-debug.log*
 /public/uploads
 /db/data/
 /nginx/log/
+<<<<<<< HEAD
 /db/backup/*
 !/db/backup/.gitkeep
+=======
+>>>>>>> 45c5c88 (feat: first commit)

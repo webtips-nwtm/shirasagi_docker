@@ -24,7 +24,6 @@ db-seed:
 	docker compose exec app bundle exec rake db:seed site=opendata name=opendata
 	docker compose exec app bundle exec rake db:seed site=lp_ name=lp
 
-
 # すべての DB セットアップ
 db-all: db-reset db-setup create-site db-seed
 

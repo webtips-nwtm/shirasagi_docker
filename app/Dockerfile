@@ -117,6 +117,24 @@ WORKDIR /var/www/shirasagi
 #     if [ -d config/samples ]; then \
 #       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
 #     fi
+#
+FROM ruby:3.2-slim AS runtime
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
+      libmecab-dev \
+      lame \
+      sox && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www/shirasagi
+
+RUN mkdir -p config/samples && \
+    if [ -d config/samples ]; then \
+      find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
+    fi
 
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
