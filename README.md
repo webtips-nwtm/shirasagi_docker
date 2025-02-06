@@ -14,51 +14,11 @@ Nginx + Unicorn + MongoDB を Docker Compose で起動し、Makefile を用い�
 
 ---
 
-<<<<<<< HEAD
-```
-├── app
-│   ├── Dockerfile
-│   ├── shirasagi
-│   └── vendor
-│       ├── hts_engine_API-1.08.tar.gz
-│       ├── lame-3.99.5.tar.gz
-│       ├── mecab-0.996.tar.gz
-│       ├── mecab-ipadic-2.7.0-20070801.patch
-│       ├── mecab-ipadic-2.7.0-20070801.tar.gz
-│       ├── mecab-ruby-0.996.tar.gz
-│       ├── open_jtalk-1.07.tar.gz
-│       └── sox-14.4.1.tar.gz
-├── compose.yml
-├── db
-│   └── data
-└── nginx
-    ├── Dockerfile
-    ├── conf.d
-    │   ├── common
-    │   ├── header.conf
-    │   ├── http.conf
-    │   ├── server
-    │   └── virtual.conf
-    └── log
-        ├── access.log
-        └── error.log
-
-```
-
----
-
-## セットアップ手順
-
-1~6を実行するとブラウザ上でhttp://172.20.0.4 にアクセス可能になります。
-=======
 ## ディレクトリ構成
 
 ```
 ├── app
 │   ├── Dockerfile
-│   ├── Dockerfile.bak.20250205
-│   ├── Dockerfile.bak.20250206
-│   ├── Dockerfile.mecab
 │   ├── shirasagi
 │   └── vendor
 │       ├── hts_engine_API-1.08.tar.gz
@@ -89,16 +49,11 @@ Nginx + Unicorn + MongoDB を Docker Compose で起動し、Makefile を用い�
 ---
 
 ## セットアップ手順
->>>>>>> 37bd625 (docs: README.md追加)
 
 ### 1. リポジトリのクローン
 
 ```bash
-<<<<<<< HEAD
 git clone --depth 1 --branch v1.17.0 --single-branch https://github.com/webtips-nwtm/shirasagi_docker.git
-=======
-git clone https://github.com/webtips-nwtm/shirasagi_docker.git
->>>>>>> 37bd625 (docs: README.md追加)
 cd shirasagi_docker
 ```
 
@@ -121,11 +76,7 @@ docker compose build
 docker compose up -d
 ```
 
-<<<<<<< HEAD
 ### 5. Makefile を使ったセットアップ
-=======
-### 6. Makefile を使ったセットアップ
->>>>>>> 37bd625 (docs: README.md追加)
 
 ```bash
 make all
