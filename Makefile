@@ -11,13 +11,10 @@ db-setup:
 # サイトの作成
 create-site:
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "172.20.0.4" }'
-<<<<<<< HEAD
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "企業サンプル", host: "company", domains: "172.20.0.4", subdir:"company", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "子育て支援サンプル", host: "childcare", domains: "172.20.0.4", subdir:"childcare", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "オープンデータサンプル", host: "opendata", domains: "172.20.0.4", subdir:"opendata", parent_id:1 }'
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "ＬＰサンプル", host: "lp_", domains: "172.20.0.4", subdir:"lp_", parent_id:1 }'
-=======
->>>>>>> 692e71f (fix: 読み上げ機能エラーの為固定IP化)
 
 # 初期データの投入
 db-seed:
