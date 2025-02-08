@@ -113,6 +113,14 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
+FROM ruby:3.0 AS runtime
+# 必要なパッケージと Yarn のインストール（apt 経由）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates \
+      libmecab-dev \
+      lame \
+      sox \
+      git \
       curl \
       gnupg && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -120,26 +128,6 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
     apt-get update && apt-get install -y yarn && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /var/www/shirasagi
-
-# RUN mkdir -p config/samples && \
-#     if [ -d config/samples ]; then \
-#       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
-#     fi
-#
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      libmecab-dev \
-      lame \
-      sox \
-      git \
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /var/www/shirasagi
 
 # Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）

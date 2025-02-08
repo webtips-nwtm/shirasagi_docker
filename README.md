@@ -72,6 +72,7 @@ git submodule update --recursive
 docker compose build
 ```
 
+<<<<<<< HEAD
 ### 1. リポジトリのクローン
 
 ```bash
@@ -104,6 +105,8 @@ docker compose up -d
 make all
 ```
 
+=======
+>>>>>>> 8426729 (fix: configのコピーエラーの対応)
 ---
 
 ## Makefile の主なターゲット
