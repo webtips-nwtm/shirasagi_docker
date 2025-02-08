@@ -22,8 +22,6 @@ services:
     restart: always
     volumes:
       - ./app/shirasagi:/var/www/shirasagi
-      - ./app/shirasagi/public:/var/www/shirasagi/public
-      - ./app/shirasagi/private:/var/www/shirasagi/private
     depends_on:
       - db
     networks:

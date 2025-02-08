@@ -113,10 +113,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /var/www/shirasagi
 
-RUN mkdir -p config/samples && \
-    if [ -d config/samples ]; then \
-      find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
-    fi
+# RUN mkdir -p config/samples && \
+#     if [ -d config/samples ]; then \
+#       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
+#     fi
 
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/

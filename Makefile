@@ -21,6 +21,8 @@ db-all: db-reset db-setup create-site db-seed
 
 # Shirasagi のセットアップ
 shirasagi-setup:
+	docker compose exec app sh -c "if ls config/samples/*.{rb,yml} > /dev/null 2>&1; then cp -n config/samples/*.{rb,yml} config/; fi"
+	docker compose exec app sed -i 's/localhost/db/g' config/mongoid.yml
 	docker compose exec app bundle install
 	docker compose exec app bundle exec rake assets:precompile RAILS_ENV=production
 	docker compose exec app bundle exec rake ss:deploy RAILS_ENV=production
