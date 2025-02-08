@@ -2,20 +2,12 @@
 # Stage 0: Node.js ビルドステージ
 #############################################
 FROM node:20.9.0-bullseye AS node
-<<<<<<< HEAD
 # このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれています
-=======
-# このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれてい ます
->>>>>>> 5048064 (firstcommit)
 
 #############################################
 # Stage 1: MeCab 本体および mecab-ipadic のビルド
 #############################################
-<<<<<<< HEAD
-FROM debian:bullseye AS mecab-build
-=======
 FROM ruby:2.7-bullseye AS mecab-build
->>>>>>> 5048064 (firstcommit)
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -45,11 +37,7 @@ RUN tar -xzf mecab-ipadic-2.7.0-20070801.tar.gz && \
 # Stage 2: Audio 関連ソフトのビルド
 # （lame, sox, hts_engine_API, open_jtalk）
 #############################################
-<<<<<<< HEAD
-FROM debian:bullseye AS audio-build
-=======
 FROM ruby:2.7-bullseye AS audio-build
->>>>>>> 5048064 (firstcommit)
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -105,11 +93,7 @@ RUN tar -xzf open_jtalk-1.07.tar.gz && \
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
-<<<<<<< HEAD
-FROM ruby:3.0-bullseye AS mecab-ruby-build
-=======
 FROM ruby:2.7-bullseye AS mecab-ruby-build
->>>>>>> 5048064 (firstcommit)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
@@ -129,11 +113,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-<<<<<<< HEAD
-FROM ruby:3.0 AS runtime
-=======
 FROM ruby:2.7 AS runtime
->>>>>>> 5048064 (firstcommit)
 # 必要なパッケージと Yarn のインストール（apt 経由）
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -153,6 +133,9 @@ WORKDIR /var/www/shirasagi
 
 # Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /opt/yarn-* /opt/yarn
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+>>>>>>> ab92e36 (fix: configのコピーエラーの対応)
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
