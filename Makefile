@@ -26,7 +26,6 @@ db-seed:
 	docker compose exec app bundle exec rake cms:generate_nodes
 	docker compose exec app bundle exec rake cms:generate_pages
 
-
 # すべての DB セットアップ
 db-all: db-reset db-setup create-site db-seed
 
