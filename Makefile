@@ -23,6 +23,9 @@ db-seed:
 	docker compose exec app bundle exec rake db:seed site=childcare name=childcare
 	docker compose exec app bundle exec rake db:seed site=opendata name=opendata
 	docker compose exec app bundle exec rake db:seed site=lp_ name=lp
+	docker compose exec app bundle exec rake cms:generate_nodes
+	docker compose exec app bundle exec rake cms:generate_pages
+	
 
 # すべての DB セットアップ
 db-all: db-reset db-setup create-site db-seed
