@@ -19,9 +19,6 @@ Nginx + Unicorn + MongoDB を Docker Compose で起動し、Makefile を用い�
 ```
 ├── app
 │   ├── Dockerfile
-│   ├── Dockerfile.bak.20250205
-│   ├── Dockerfile.bak.20250206
-│   ├── Dockerfile.mecab
 │   ├── shirasagi
 │   └── vendor
 │       ├── hts_engine_API-1.08.tar.gz
@@ -58,7 +55,7 @@ Nginx + Unicorn + MongoDB を Docker Compose で起動し、Makefile を用い�
 ### 1. リポジトリのクローン
 
 ```bash
-git clone --depth 1 --branch v1.19.1 --single-branch https://github.com/webtips-nwtm/shirasagi_docker.git
+git clone --depth 1 --branch v1.16.2 --single-branch https://github.com/webtips-nwtm/shirasagi_docker.git
 cd shirasagi_docker
 ```
 
@@ -81,7 +78,7 @@ docker compose build
 docker compose up -d
 ```
 
-### 6. Makefile を使ったセットアップ
+### 5. Makefile を使ったセットアップ
 
 ```bash
 make all
