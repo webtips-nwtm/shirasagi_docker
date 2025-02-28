@@ -93,7 +93,7 @@ RUN tar -xzf open_jtalk-1.07.tar.gz && \
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
-FROM ruby:3.0-bullseye AS mecab-ruby-build
+FROM ruby:2.7-bullseye AS mecab-ruby-build
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
@@ -113,7 +113,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-FROM ruby:3.0 AS runtime
+FROM ruby:2.7 AS runtime
 # 必要なパッケージと Yarn のインストール（apt 経由）
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
@@ -130,10 +130,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /var/www/shirasagi
 
-<<<<<<< HEAD
 # Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
-=======
 # RUN mkdir -p config/samples && \
 #     if [ -d config/samples ]; then \
 #       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
@@ -141,7 +139,9 @@ COPY --from=node /usr/local/bin/node /usr/local/bin/node
 
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
->>>>>>> 4d4fb0b (fix: configのコピーエラーの対応)
+# Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+>>>>>>> 5048064 (firstcommit)
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
