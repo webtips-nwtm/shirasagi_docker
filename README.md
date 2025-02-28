@@ -72,27 +72,6 @@ git submodule update --recursive
 docker compose build
 ```
 
-<<<<<<< HEAD
-### 1. リポジトリのクローン
-
-```bash
-git clone https://github.com/webtips-nwtm/shirasagi_docker.git
-cd shirasagi_docker
-```
-
-### 2. サブモジュールの初期化・更新
-
-```bash
-git submodule init
-git submodule update --recursive
-```
-
-### 3. Docker イメージのビルド
-
-```bash
-docker compose build
-```
-
 ### 4. コンテナの起動
 
 ```bash
@@ -105,8 +84,6 @@ docker compose up -d
 make all
 ```
 
-=======
->>>>>>> 8426729 (fix: configのコピーエラーの対応)
 ---
 
 ## Makefile の主なターゲット
