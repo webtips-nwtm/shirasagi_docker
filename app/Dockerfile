@@ -2,12 +2,12 @@
 # Stage 0: Node.js ビルドステージ
 #############################################
 FROM node:20.9.0-bullseye AS node
-# このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれてい ます
+# このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれています
 
 #############################################
 # Stage 1: MeCab 本体および mecab-ipadic のビルド
 #############################################
-FROM ruby:2.7-bullseye AS mecab-build
+FROM debian:bullseye AS mecab-build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -37,7 +37,7 @@ RUN tar -xzf mecab-ipadic-2.7.0-20070801.tar.gz && \
 # Stage 2: Audio 関連ソフトのビルド
 # （lame, sox, hts_engine_API, open_jtalk）
 #############################################
-FROM ruby:2.7-bullseye AS audio-build
+FROM debian:bullseye AS audio-build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -93,7 +93,7 @@ RUN tar -xzf open_jtalk-1.07.tar.gz && \
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
-FROM ruby:2.7-bullseye AS mecab-ruby-build
+FROM ruby:3.0-bullseye AS mecab-ruby-build
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
@@ -113,9 +113,9 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-FROM ruby:2.7 AS runtime
+FROM ruby:3.0 AS runtime
 # 必要なパッケージと Yarn のインストール（apt 経由）
-
+>>>>>>> feature/v1.16.2
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
@@ -131,13 +131,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /var/www/shirasagi
 
-# RUN mkdir -p config/samples && \
-#     if [ -d config/samples ]; then \
-#       find config/samples -type f \( -name "*.rb" -o -name "*.yml" \) -exec cp -n {} config/ \; || true; \
-#     fi
-
-COPY --from=node /opt/yarn-* /opt/yarn
-COPY --from=node /usr/local/bin/node /usr/local/bin/
+# Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
@@ -149,7 +144,7 @@ RUN ln -fs /usr/bin/yarn /usr/local/bin/yarnpkg
 # MeCab バイナリとライブラリ
 COPY --from=mecab-build /usr/local/bin/mecab* /usr/local/bin/
 COPY --from=mecab-build /usr/local/lib/libmecab* /usr/local/lib/
-# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を 含む）
+# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を含む）
 COPY --from=mecab-build /usr/local/etc/mecabrc /usr/local/etc/mecabrc
 COPY --from=mecab-build /usr/local/lib/mecab /usr/local/lib/mecab
 
