@@ -2,12 +2,20 @@
 # Stage 0: Node.js ビルドステージ
 #############################################
 FROM node:20.9.0-bullseye AS node
+<<<<<<< HEAD
 # このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれています
+=======
+# このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれてい ます
+>>>>>>> 5048064 (firstcommit)
 
 #############################################
 # Stage 1: MeCab 本体および mecab-ipadic のビルド
 #############################################
+<<<<<<< HEAD
 FROM debian:bullseye AS mecab-build
+=======
+FROM ruby:2.7-bullseye AS mecab-build
+>>>>>>> 5048064 (firstcommit)
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -37,7 +45,11 @@ RUN tar -xzf mecab-ipadic-2.7.0-20070801.tar.gz && \
 # Stage 2: Audio 関連ソフトのビルド
 # （lame, sox, hts_engine_API, open_jtalk）
 #############################################
+<<<<<<< HEAD
 FROM debian:bullseye AS audio-build
+=======
+FROM ruby:2.7-bullseye AS audio-build
+>>>>>>> 5048064 (firstcommit)
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -93,7 +105,11 @@ RUN tar -xzf open_jtalk-1.07.tar.gz && \
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
+<<<<<<< HEAD
 FROM ruby:3.0-bullseye AS mecab-ruby-build
+=======
+FROM ruby:2.7-bullseye AS mecab-ruby-build
+>>>>>>> 5048064 (firstcommit)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
@@ -113,7 +129,11 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
+<<<<<<< HEAD
 FROM ruby:3.0 AS runtime
+=======
+FROM ruby:2.7 AS runtime
+>>>>>>> 5048064 (firstcommit)
 # 必要なパッケージと Yarn のインストール（apt 経由）
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
@@ -148,7 +168,7 @@ RUN ln -fs /usr/bin/yarn /usr/local/bin/yarnpkg
 # MeCab バイナリとライブラリ
 COPY --from=mecab-build /usr/local/bin/mecab* /usr/local/bin/
 COPY --from=mecab-build /usr/local/lib/libmecab* /usr/local/lib/
-# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を含む）
+# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を 含む）
 COPY --from=mecab-build /usr/local/etc/mecabrc /usr/local/etc/mecabrc
 COPY --from=mecab-build /usr/local/lib/mecab /usr/local/lib/mecab
 
