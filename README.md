@@ -70,35 +70,6 @@ docker compose build
 
 ### 4. コンテナの起動
 
-## =======
-
-## セットアップ手順
-
-1~6を実行するとブラウザ上でhttp://172.20.0.4 にアクセス可能になります。
-
-### 1. リポジトリのクローン
-
-```bash
-git clone https://github.com/webtips-nwtm/shirasagi_docker.git
->>>>>>> 1b05483 (fix: configのコピーエラーの対応)
-cd shirasagi_docker
-```
-
-### 2. サブモジュールの初期化・更新
-
-```bash
-git submodule init
-git submodule update --recursive
-```
-
-### 3. Docker イメージのビルド
-
-```bash
-docker compose build
-```
-
-### 4. コンテナの起動
-
 ```bash
 docker compose up -d
 ```
