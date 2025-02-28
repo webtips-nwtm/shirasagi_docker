@@ -135,7 +135,6 @@ WORKDIR /var/www/shirasagi
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /opt/yarn-* /opt/yarn
 COPY --from=node /usr/local/bin/node /usr/local/bin/
->>>>>>> ab92e36 (fix: configのコピーエラーの対応)
 COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
 RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
