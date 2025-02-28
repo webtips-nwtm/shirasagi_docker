@@ -1,6 +1,6 @@
 services:
   db:
-    image: mongo:7
+    image: mongo:4.4
     ports:
       - 27017:27017
     volumes:
@@ -37,7 +37,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - 80:80
+      - "8080:80" # コンテナの80番をホストの8080番にマッピング
     restart: always
     volumes:
       - ./app/shirasagi/:/var/www/shirasagi
