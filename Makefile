@@ -25,6 +25,11 @@ db-seed:
 	docker compose exec app bundle exec rake db:seed site=lp_ name=lp
 	docker compose exec app bundle exec rake cms:generate_nodes
 	docker compose exec app bundle exec rake cms:generate_pages
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> 738d750 (feat: v1.15.0)
 
 # すべての DB セットアップ
 db-all: db-reset db-setup create-site db-seed
