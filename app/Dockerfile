@@ -115,7 +115,6 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 FROM ruby:3.0 AS runtime
 # 必要なパッケージと Yarn のインストール（apt 経由）
->>>>>>> feature/v1.16.2
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
       libmecab-dev \
@@ -169,3 +168,4 @@ ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig:$PKG_CONFIG_PATH
 ENV RUBYLIB=/usr/local/lib/ruby/site_ruby
 
 CMD ["bash"]
+
