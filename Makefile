@@ -7,6 +7,7 @@ db-reset:
 # MongoDB のセットアップ
 db-setup:
 	docker compose exec app bundle exec rake db:create_indexes
+	docker compose exec app bundle exec rake ss:migrate
 
 # サイトの作成
 create-site:

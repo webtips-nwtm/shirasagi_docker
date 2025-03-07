@@ -1,7 +1,7 @@
 #############################################
 # Stage 1: MeCab 本体および mecab-ipadic のビルド
 #############################################
-FROM ruby:2.7-bullseye AS mecab-build
+FROM debian:bullseye AS mecab-build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -31,7 +31,7 @@ RUN tar -xzf mecab-ipadic-2.7.0-20070801.tar.gz && \
 # Stage 2: Audio 関連ソフトのビルド
 # （lame, sox, hts_engine_API, open_jtalk）
 #############################################
-FROM ruby:2.7-bullseye AS audio-build
+FROM debian:bullseye AS audio-build
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -87,7 +87,7 @@ RUN tar -xzf open_jtalk-1.07.tar.gz && \
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
-FROM ruby:2.7-bullseye AS mecab-ruby-build
+FROM ruby:3.0-bullseye AS mecab-ruby-build
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
@@ -107,7 +107,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-FROM ruby:2.7 AS runtime
+FROM ruby:3.0 AS runtime
 # 必要なパッケージと Yarn のインストール（apt 経由）
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
