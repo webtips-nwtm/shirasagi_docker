@@ -1,4 +1,10 @@
 #############################################
+# Stage 0: Node.js ビルドステージ
+#############################################
+FROM node:20.9.0-bullseye AS node
+# このイメージには Node.js, npm, Yarn（場合によっては含まれている）が含まれてい ます
+
+#############################################
 # Stage 1: MeCab 本体および mecab-ipadic のビルド
 #############################################
 FROM debian:bullseye AS mecab-build
@@ -117,15 +123,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       git \
       curl \
       gnupg && \
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && apt-get install -y yarn && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /var/www/shirasagi
+
+# Node.js / npm は node ステージからコピー（Yarn は apt 経由でインストール済み）
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules/ /usr/local/lib/node_modules/
+RUN ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+    ln -fs /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npx && \
+    ln -fs /usr/local/bin/node /usr/local/bin/nodejs
+# apt でインストールされた Yarn は /usr/bin/yarn なのでシンボリックリンクを作成
+RUN ln -fs /usr/bin/yarn /usr/local/bin/yarnpkg
 
 # GLIBC のバージョン依存の問題を回避するため、必要なバイナリのみコピー
 # MeCab バイナリとライブラリ
 COPY --from=mecab-build /usr/local/bin/mecab* /usr/local/bin/
 COPY --from=mecab-build /usr/local/lib/libmecab* /usr/local/lib/
-# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を含む）
+# 辞書・設定ファイルもコピー（/usr/local/etc/mecabrc と /usr/local/lib/mecab を 含む）
 COPY --from=mecab-build /usr/local/etc/mecabrc /usr/local/etc/mecabrc
 COPY --from=mecab-build /usr/local/lib/mecab /usr/local/lib/mecab
 
@@ -150,4 +168,3 @@ ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig:$PKG_CONFIG_PATH
 ENV RUBYLIB=/usr/local/lib/ruby/site_ruby
 
 CMD ["bash"]
-
