@@ -9,7 +9,6 @@ db-setup:
 	docker compose exec app bundle exec rake db:create_indexes
 	docker compose exec app bundle exec rake ss:migrate
 
-
 # サイトの作成
 create-site:
 	docker compose exec app bundle exec rake ss:create_site data='{ name: "自治体サンプル", host: "www", domains: "172.20.0.4" }'
