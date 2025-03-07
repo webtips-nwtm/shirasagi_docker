@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mongo:4.4
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db/backup:/backup
+      - ./db/data:/data/db # MongoDBのデータ永続化
+    networks:
+      shirasagi_net:
+        ipv4_address: 172.20.0.2
+
+  app:
+    platform: linux/amd64
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    tty: true
+    stdin_open: true
+    restart: always
+    volumes:
+      - ./app/shirasagi:/var/www/shirasagi
+    depends_on:
+      - db
+    networks:
+      shirasagi_net:
+        ipv4_address: 172.20.0.3
+    environment:
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - LD_LIBRARY_PATH=/usr/local/lib
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - ./app/shirasagi/:/var/www/shirasagi
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/log:/var/log/nginx
+    depends_on:
+      - app
+    networks:
+      shirasagi_net:
+        ipv4_address: 172.20.0.4
+
+networks:
+  shirasagi_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

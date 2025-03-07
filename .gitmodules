@@ -1,0 +1,3 @@
+[submodule "app/shirasagi"]
+	path = app/shirasagi
+	url = https://github.com/shirasagi/shirasagi
