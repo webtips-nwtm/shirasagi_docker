@@ -51,7 +51,7 @@ Nginx + Unicorn + MongoDB を Docker Compose で起動し、Makefile を用い�
 ### 1. リポジトリのクローン
 
 ```bash
-git clone --depth 1 --branch v1.17.0 --single-branch https://github.com/webtips-nwtm/shirasagi_docker.git
+git clone --depth 1 --branch v1.18.2 --single-branch https://github.com/webtips-nwtm/shirasagi_docker.git
 cd shirasagi_docker
 ```
 
