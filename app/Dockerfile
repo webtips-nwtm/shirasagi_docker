@@ -78,7 +78,7 @@ RUN ldconfig
 #############################################
 # Stage 3: mecab‑ruby 拡張のビルド
 #############################################
-FROM ruby:3.1 AS mecab-ruby-build
+FROM ruby:3.2-bullseye AS mecab-ruby-build
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends pkg-config && \
@@ -100,7 +100,7 @@ RUN find /usr/local/lib/ruby -name "MeCab.so"
 #############################################
 # Stage 4: 本番環境用ランタイムイメージ
 #############################################
-FROM ruby:3.1 AS runtime
+FROM ruby:3.2 AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       ca-certificates \
